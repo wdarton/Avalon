@@ -8,7 +8,28 @@ Clone git repo into plugins folder
 
 
 ## Database
+Import included .sql file.
 
+### Encrypted fields
+For fields that should be encrypted at rest, modify the table file as follows:
+
+Add `use Cake\Database\Schema\TableSchemaInterface;`
+
+Create a new function at the top:
+
+```
+protected function _initializeSchema(TableSchemaInterface $schema): TableSchemaInterface
+{
+    $schema->setColumnType('email', 'crypted');
+    $schema->setColumnType('address_line1', 'crypted');
+    $schema->setColumnType('address_line2', 'crypted');
+    $schema->setColumnType('city', 'crypted');
+    $schema->setColumnType('state', 'crypted');
+    $schema->setColumnType('zipcode', 'crypted');
+
+    return $schema;
+}
+```
 
 
 ## Core App Settings
@@ -105,7 +126,7 @@ protected function bootstrapCli(): void
 ```
 
 ### src/Controller/AppController.php
-Merge with included file
+Merge with included file.
 
 
 
