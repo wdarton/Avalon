@@ -13,18 +13,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Avalon\\": "plugins/Avalon/src/"
+            "Avalon\\": "/vendor/wdarton/avalon/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Avalon\\Test\\": "plugins/Avalon/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
-        }
-    },
-    "extra": {
-        "installer-paths": {
-            "plugins/{$name}": ["wdarton/avalon"]   
         }
     }
 }
