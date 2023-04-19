@@ -4,6 +4,8 @@
 
 Clone git repo into plugins folder
 
+Run: `composer require cakephp/authentication`
+
 # Post Install Config
 
 
