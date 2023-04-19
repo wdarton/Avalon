@@ -21,10 +21,5 @@
             "Avalon\\Test\\": "plugins/Avalon/tests/",
             "Cake\\Test\\": "vendor/cakephp/cakephp/tests/"
         }
-    },
-    "extra": {
-        "installer-paths": {
-            "plugins/{$name}": ["wdarton/avalon"]   
-        }
     }
 }
