@@ -1,0 +1,235 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+$blue:    #405B85;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #D91200;
+$orange:  #fd7e14;
+$yellow:  #EBA000;
+// $green:   #2F8500;
+$green:   #349558;
+$teal:    #20c997;
+$cyan:    #5E86C4;
+
+// $body-bg: #E5E8ED;
+
+@import "./bootstrap/bootstrap";
+@import "./switches";
+
+// Then add additional custom code here
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+hr {
+	border-top: 1px solid #95989A;
+}
+/*.navbar-desktop {
+	padding-top: 0;
+	padding-bottom: 0;
+	height: 50px;
+
+	.navbar-nav {
+		position: absolute;
+		left: 300px;
+
+		.nav-link {
+			border-top: 5px solid $primary;
+			border-bottom: 5px solid $primary;
+			color: $white;
+		}
+		.nav-link:hover {
+			background-color: #4C6C9E;
+			color: $white;
+			border-bottom: 5px solid #B7B7B7;
+			border-top: 5px solid #4C6C9E;
+		}
+
+		.active {
+			.nav-link {
+				background-color: #F4F4F4;
+				color: $primary;
+				border-bottom: 5px solid #B7B7B7;
+				border-top: 5px solid $white;
+			}
+		}
+	}
+
+	img {
+		max-height: 35px;
+	}
+
+	.nav-user {
+		margin-left: 15px;
+	}
+
+	.dropdown-menu {
+		background-color: $primary;
+		margin: 0;
+		border: 0px solid $primary;
+
+		.dropdown-item {
+			color: $white;
+		}
+
+		.dropdown-item:hover {
+			background-color: #4C6C9E;
+		}
+
+		.dropdown-divider {
+			border-color: #95989A;
+			margin: 0.5rem 1rem;
+		}
+	}
+
+	.dropdown:hover > .dropdown-menu {
+	    display: block;
+	}
+}*/
+
+/*.navbar-brand {
+	color: $white;
+}*/
+
+/*.navbar-brand:hover {
+	color: $white;
+}*/
+
+/*.nav-pills {
+	.nav-item:hover {
+		background-color: #F4F4F4;
+		border-radius: 4px;
+	}
+}*/
+
+.side-nav {
+/*	padding: 0 15px;*/
+/*	padding-top: 50px;*/
+/*	width: 300px;*/
+/*	float: left;*/
+/*	min-height: 100vh;*/
+/*	background-color: #CAD1DB;*/
+/*	position: fixed;*/
+
+/*	img {*/
+/*		width: 270px;*/
+/*		padding: 15px 0;*/
+/*	}*/
+
+	.nav-link {
+		color: var(--bs-light);
+	}
+
+	.nav-link:hover {
+			color: var(--bs-light-text);
+		}
+
+		.active {
+			.nav-link {
+				background-color: #F4F4F4;
+				color: $primary;
+			}
+		}
+
+
+
+}
+
+/*.content {
+	padding-top: 65px;
+	float: left;
+	padding-left: 15px;
+}*/
+
+/*@media (min-width: 992px) {
+	.content {
+		width: calc(100% - 300px);
+		margin-left: 300px;
+	}
+}*/
+
+/*.row-gutters {
+	padding-left: 100px;
+	padding-right: 100px;
+}*/
+
+.material {
+	box-shadow: 0 0.1em 0.5em rgba(0, 0, 0, 0.16);
+}
+
+.material-strong {
+	box-shadow: 0 0.1em 0.8em rgba(0, 0, 0, 0.7);
+
+}
+
+.avalon {
+	font-family: 'Expletus Sans';
+	font-size: 6rem;
+	color: $primary;
+	text-shadow: 0 0.025em 0.1em rgba(0,0,0,0.4);
+}
+
+.tab-content {
+	padding: 15px;
+}
+
+.is-invalid {
+	input {
+		border-color: $danger;
+	}
+	input:focus {
+		border-color: $danger;
+		box-shadow: 0 0 0 0.2rem rgba(217, 18, 0, 0.25);
+	}
+	.invalid-feedback {
+		display: block;
+	}
+}
+
+.dt-bootstrap4 {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.modal-icon {
+	padding-left: 1.25rem;
+}
+
+/*This will keep Modals from causing the page to jump up when they open*/
+body.modal-open {
+    overflow: visible;
+}
+
+.btn-link {
+	padding: 0;
+}
+
+.gtable-bg {
+	background-color: $white;
+}
+
+.gtable-hover {
+	background-color: $body-bg;
+}
+
+.gtable-select {
+	background-color: #CAD1DB;
+}
+
+.person-photo {
+	max-width: 300px;
+}
+
+.details-control {
+	cursor: pointer;
+}
+
+.datepicker {
+	background-color: $white;
+}

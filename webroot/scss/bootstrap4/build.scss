@@ -1,0 +1,14 @@
+// Variable overides first
+$primary: #405B85;
+$body-bg: #E5E8ED;
+
+$success: #2F8500;
+$info: #5E86C4;
+$warning: #EBA000;
+$danger: #D91200;
+
+/*@import "bootstrap/scss/functions";*/
+@import "bootstrap/_variables";
+@import "bootstrap/_mixins";
+
+@import "select2-bootstrap4";
