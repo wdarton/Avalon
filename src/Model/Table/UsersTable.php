@@ -156,4 +156,8 @@ class UsersTable extends Table
 
         return $rules;
     }
+
+    public function findNotLocked(Query $query, array $options) {
+        return $query->where(['locked' => 0]);
+    }
 }

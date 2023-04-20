@@ -89,7 +89,7 @@ public function getAuthenticationService(ServerRequestInterface $request): Authe
         'resolver' => [
             'className' => 'Authentication.Orm',
             'userModel' => 'Avalon.Users',
-            // 'finder' => 'active',
+            'finder' => 'notLocked',
         ]
     ]);
 
