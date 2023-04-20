@@ -11,7 +11,7 @@
  Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 20/04/2023 09:06:21
+ Date: 20/04/2023 09:16:36
 */
 
 SET NAMES utf8mb4;
@@ -134,6 +134,11 @@ CREATE TABLE `user_preferences`  (
 ) ENGINE = MyISAM AUTO_INCREMENT = 2 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = Dynamic;
 
 -- ----------------------------
+-- Records of user_preferences
+-- ----------------------------
+INSERT INTO `user_preferences` VALUES (2, 11, 'Africa/Abidjan');
+
+-- ----------------------------
 -- Table structure for users
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
@@ -155,5 +160,10 @@ CREATE TABLE `users`  (
   `modified_by` varchar(255) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 11 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of users
+-- ----------------------------
+INSERT INTO `users` VALUES (11, 1, 'Admin', 'User', '', 'admin', '$2y$10$jTbxuog2vJZPooFvWPXjY.lrx7fdcyk0PmKcdiVDueCezm6ztBISC', 0, NULL, 0, 0, '2023-04-20 15:12:55', 'Wesley Darton', '2023-04-20 15:12:55', 'Wesley Darton');
 
 SET FOREIGN_KEY_CHECKS = 1;
