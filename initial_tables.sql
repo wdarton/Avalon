@@ -11,7 +11,7 @@
  Target Server Version : 80031
  File Encoding         : 65001
 
- Date: 19/04/2023 14:31:44
+ Date: 20/04/2023 09:06:21
 */
 
 SET NAMES utf8mb4;
@@ -37,6 +37,15 @@ CREATE TABLE `menus`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 28 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
+-- Records of menus
+-- ----------------------------
+INSERT INTO `menus` VALUES (2, 'Menus', 'fas fa-sitemap', '', 'admin', 'Menus', 'index', 905, 1, 0, 1);
+INSERT INTO `menus` VALUES (3, 'Pages', 'fas fa-stream', '', 'admin', 'Pages', 'index', 906, 1, 0, 1);
+INSERT INTO `menus` VALUES (13, 'Users', 'fas fa-users', 'Avalon', '', 'Users', 'index', 901, 1, 0, 1);
+INSERT INTO `menus` VALUES (14, 'Roles', 'fas fa-id-badge', 'Avalon', '', 'Roles', 'index', 902, 1, 0, 1);
+INSERT INTO `menus` VALUES (24, 'Dashboard', 'fas fa-columns', '', '', '', 'dashboard', 2, 1, 1, 1);
+
+-- ----------------------------
 -- Table structure for pages
 -- ----------------------------
 DROP TABLE IF EXISTS `pages`;
@@ -56,37 +65,16 @@ CREATE TABLE `pages`  (
 ) ENGINE = InnoDB AUTO_INCREMENT = 15 CHARACTER SET = utf8mb3 COLLATE = utf8mb3_general_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Table structure for people
+-- Records of pages
 -- ----------------------------
-DROP TABLE IF EXISTS `people`;
-CREATE TABLE `people`  (
-  `id` int UNSIGNED NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `last_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `address_line1` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `address_line2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `zipcode` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `primary_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `primary_phone_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `secondary_phone` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `secondary_phone_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `course_graduate` tinyint(1) NULL DEFAULT NULL,
-  `course_payment` tinyint(1) NULL DEFAULT NULL,
-  `completed_course` int NULL DEFAULT NULL COMMENT 'id of course completion',
-  `active` tinyint(1) NULL DEFAULT NULL,
-  `is_deceased` tinyint(1) NULL DEFAULT NULL,
-  `needs_action` tinyint(1) NULL DEFAULT NULL,
-  `photo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `photo_dir` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `created` datetime NULL DEFAULT NULL,
-  `created_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  `modified` datetime NULL DEFAULT NULL,
-  `modified_by` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
-  PRIMARY KEY (`id`) USING BTREE
-) ENGINE = InnoDB AUTO_INCREMENT = 4 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+INSERT INTO `pages` VALUES (1, 2, 'View All', 'fas fa-eye', '', 'admin', 'menus', 'index', 1, 1, 1);
+INSERT INTO `pages` VALUES (2, 2, 'Add Menu', 'fas fa-plus', '', 'admin', 'Menus', 'add', 2, 1, 1);
+INSERT INTO `pages` VALUES (3, 3, 'View All', 'fas fa-eye', '', 'admin', 'Pages', 'index', 1, 1, 1);
+INSERT INTO `pages` VALUES (4, 3, 'Add Page', 'fas fa-plus', '', 'admin', 'Pages', 'add', 2, 1, 1);
+INSERT INTO `pages` VALUES (7, 13, 'View All', 'fas fa-eye', '', 'avalon', 'Users', 'index', 1, 1, 1);
+INSERT INTO `pages` VALUES (8, 13, 'Add User', 'fas fa-plus', NULL, 'avalon', 'Users', 'add', 2, 1, 1);
+INSERT INTO `pages` VALUES (9, 14, 'View All', 'fas fa-eye', NULL, 'avalon', 'Roles', 'index', 1, 1, 1);
+INSERT INTO `pages` VALUES (10, 14, 'Add Role', 'fas fa-plus', NULL, 'avalon', 'Roles', 'add', 2, 1, 1);
 
 -- ----------------------------
 -- Table structure for roles
@@ -97,6 +85,12 @@ CREATE TABLE `roles`  (
   `label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB AUTO_INCREMENT = 20 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci ROW_FORMAT = DYNAMIC;
+
+-- ----------------------------
+-- Records of roles
+-- ----------------------------
+INSERT INTO `roles` VALUES (1, 'Admin');
+INSERT INTO `roles` VALUES (2, 'User');
 
 -- ----------------------------
 -- Table structure for user_action_logs
