@@ -15,7 +15,7 @@
 
 use Cake\Core\Configure;
 
-$cakeDescription = 'Avalon';
+$cakeDescription = $appDescription;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">

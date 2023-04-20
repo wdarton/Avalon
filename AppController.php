@@ -32,6 +32,7 @@ use Cake\Log\Log;
 class AppController extends Controller
 {
     public static $sessionUserFullName = null;
+    public static $appDescription = "Avalon";
     /**
      * Initialization hook method.
      *
@@ -305,6 +306,7 @@ class AppController extends Controller
             $this->set('navPages', $navPages);
             $this->set('params', $this->request->getAttribute('params'));
             $this->set('currMenu', $currentMenu);
+            $this->set('appDescription', self::$appDescription);
     //         // $this->set('acl', $this->Acl);
         }
     }
