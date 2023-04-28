@@ -25,10 +25,10 @@ function editEntity(id, controller, method='') {
 			break;
 	}
 
-	var bodyUrl = controller+'/edit/'+id;
+	var bodyUrl = '/'+controller+'/edit/'+id;
 
 	if (method !== '') {
-		bodyUrl = controller+'/'+method+'/'+id;
+		bodyUrl = '/'+controller+'/'+method+'/'+id;
 	}
 
 	$('#modal-body').load(bodyUrl, function() {
