@@ -17,7 +17,7 @@ use Cake\Core\Configure;
 
 // $this->layout = 'login';
 
-$cakeDescription = 'Avalon';
+$cakeDescription = $appDescription;
 ?>
 <!DOCTYPE html>
 <html lang="en" data-bs-theme="light">
@@ -28,8 +28,7 @@ $cakeDescription = 'Avalon';
         <?php if (Configure::read('debug')): ?>
             DEV |
         <?php endif; ?>
-        <?= $cakeDescription ?>:
-        <?= $this->fetch('title') ?>
+        <?= $cakeDescription ?>
     </title>
     <?= $this->Html->meta('icon') ?>
     <?= $this->Html->meta('charset', 'utf-8') ?>

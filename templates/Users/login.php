@@ -7,7 +7,7 @@ $this->element('Form/Templates/vert-full-width');
 
 <div class="row justify-content-sm-center align-self-center">
 	<div class="col-sm-4">
-		<h1 class="text-center avalon">AVALON</h1>
+		<h1 class="text-center avalon"><?= $appDescription ?></h1>
 		<h5 class="text-center"><em>Avalon CakePHP Plugin</em></h5>
 
 		<?= $this->Form->create() ?>
