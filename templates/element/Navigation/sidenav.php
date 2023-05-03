@@ -184,12 +184,12 @@
                     <?php else: ?>
                         <?php // There are no child pages for this menu ?>
                         <?php if ($adminMenu->literal): ?>
-                            <?= $this->Html->link("<span class='{$active}'>{$adminMenu->label}</span>",
+                            <?= $this->Html->link("<span class='{$active}'>{$icon}{$adminMenu->label}</span>",
                                     ($adminMenu->prefix ? $adminMenu->prefix : '').($adminMenu->controller ? '/'.$adminMenu->controller : '').'/'.$adminMenu->controller_action,
                                     ['class' => 'btn btn-menu p-2 d-inline-flex align-items-center w-100 border-0 rounded-0', 'escape' => false,]
                                 ); ?>
                         <?php else: ?>
-                                <?= $this->Html->link("<span class='{$active}'>{$adminMenu->label}</span>", [
+                                <?= $this->Html->link("<span class='{$active}'>{$icon}{$adminMenu->label}</span>", [
                                     'prefix' => $adminMenu->prefix ? $adminMenu->prefix : false,
                                     'controller' => $adminMenu->controller,
                                     'action' => $adminMenu->controller_action,
