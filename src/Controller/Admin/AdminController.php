@@ -1,5 +1,5 @@
 <?php
-namespace App\Controller\Admin;
+namespace Avalon\Controller\Admin;
 
 use App\Controller\AppController;
 

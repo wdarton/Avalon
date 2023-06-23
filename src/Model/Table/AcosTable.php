@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Table;
+namespace Avalon\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -38,7 +38,7 @@ class AcosTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->hasMany('Permissions', [
+        $this->hasMany('Avalon.Permissions', [
             'foreignKey' => 'aco_id'
         ]);
     }
@@ -88,17 +88,38 @@ class AcosTable extends Table
         }
 
         foreach ($children as $child) {
-            // Check to see if the child's parent has a parent
+            // Check to see if the child has a grandparent
             $parent = $this->get($child->parent_id);
             if (!is_null($parent->parent_id)) {
-                // The parent is a child
-                $grandParent = $this->get($parent->parent_id);
-                $acos[$grandParent->id]['children'][$parent->id]['children'][] = $child;
+                // We have a grandparent
+                
+                // Check to see if the child has a great-grandparent
+                $grandparent = $this->get($parent->parent_id);
+                if (!is_null($grandparent->parent_id)) {
+                    // We have a great-grandparent
+                    $greatGrandparent = $this->get($grandparent->parent_id);
+                    $acos[$greatGrandparent->id]['children'][$grandparent->id]['children'][$parent->id]['children'][] = $child;
+                    
+                } else {
+                    $acos[$grandparent->id]['children'][$parent->id]['children'][] = $child;
+                }
             } else {
                 $acos[$child->parent_id]['children'][$child->id][] = $child;
             }
-
         }
+
+        // foreach ($children as $child) {
+        //     // Check to see if the child's parent has a parent
+        //     $parent = $this->get($child->parent_id);
+        //     if (!is_null($parent->parent_id)) {
+        //         // The parent is a child
+        //         $grandParent = $this->get($parent->parent_id);
+        //         $acos[$grandParent->id]['children'][$parent->id]['children'][] = $child;
+        //     } else {
+        //         $acos[$child->parent_id]['children'][$child->id][] = $child;
+        //     }
+
+        // }
 
         return $acos;
     }

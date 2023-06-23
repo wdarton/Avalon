@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Table;
+namespace Avalon\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -14,7 +14,7 @@ use Cake\Log\Log;
  * @property \App\Model\Table\AcosTable|\Cake\ORM\Association\BelongsTo $Acos
  *
  * @method \App\Model\Entity\Permission get($primaryKey, $options = [])
- * @method \App\Model\Entity\Permission newEntity($data = null, array $options = [])
+ * @method \App\Model\Entity\Permission newEmptyEntity($data = null, array $options = [])
  * @method \App\Model\Entity\Permission[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Permission|bool save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Permission saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
@@ -38,10 +38,10 @@ class PermissionsTable extends Table
         $this->setDisplayField('id');
         $this->setPrimaryKey('id');
 
-        $this->belongsTo('Roles', [
+        $this->belongsTo('Avalon.Roles', [
             'foreignKey' => 'role_id'
         ]);
-        $this->belongsTo('Acos', [
+        $this->belongsTo('Avalon.Acos', [
             'foreignKey' => 'aco_id'
         ]);
     }
@@ -69,7 +69,7 @@ class PermissionsTable extends Table
      * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
      * @return \Cake\ORM\RulesChecker
      */
-    public function buildRules(RulesChecker $rules)
+    public function buildRules(RulesChecker $rules): RulesChecker
     {
         $rules->add($rules->existsIn(['role_id'], 'Roles'));
         $rules->add($rules->existsIn(['aco_id'], 'Acos'));
@@ -98,7 +98,7 @@ class PermissionsTable extends Table
             }
 
             $acoId = str_replace('aco-', '', $aco);
-            $permission = $this->newEntity();
+            $permission = $this->newEmptyEntity();
             $permission->role_id = $roleId;
             $permission->aco_id = $acoId;
             $permission->allowed = $value;
@@ -130,7 +130,7 @@ class PermissionsTable extends Table
 
                 if (!$existingPermission) {
                     // Create the permission
-                    $permission = $this->newEntity();
+                    $permission = $this->newEmptyEntity();
                     $permission->role_id = $role->id;
                     $permission->aco_id = $aco->id;
                     $permission->allowed = -1;

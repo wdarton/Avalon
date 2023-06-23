@@ -90,23 +90,22 @@ class RolesController extends AppController
         $role = $this->Roles->get($id, [
             'contain' => []
         ]);
-        // $acos = $this->Roles->Permissions->Acos->getAcos();
-        // $permissions = $this->Roles->Permissions->getEditablePermissions($id);
-        // $effectivePerms = $this->Roles->getEffectiveRolePermissions($id);
-        // $acosByName = $this->Roles->Permissions->Acos->getAcosByName($id);
+        $acos = $this->Roles->Permissions->Acos->getAcos();
+        $permissions = $this->Roles->Permissions->getEditablePermissions($id);
+        $effectivePerms = $this->Roles->getEffectiveRolePermissions($id);
+        $acosByName = $this->Roles->Permissions->Acos->getAcosByName($id);
 
         if ($this->request->is(['patch', 'post', 'put'])) {
             $role = $this->Roles->patchEntity($role, $this->request->getData());
-            // if ($this->Roles->savePermissions($role, $this->request->getData())) {
-            if ($this->Roles->save($role)) {
+            if ($this->Roles->savePermissions($role, $this->request->getData())) {
                 $this->Flash->success(__('The role has been saved.'));
 
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The role could not be saved. Please, try again.'));
         }
-        // $this->set(compact('role', 'acos', 'permissions', 'effectivePerms', 'acosByName'));
-        $this->set(compact('role'));
+        $this->set(compact('role', 'acos', 'permissions', 'effectivePerms', 'acosByName'));
+        // $this->set(compact('role'));
     }
 
     /**

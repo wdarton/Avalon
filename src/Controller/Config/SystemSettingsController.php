@@ -1,8 +1,10 @@
 <?php
-namespace App\Controller\Config;
+namespace Avalon\Controller\Config;
 
 use App\Controller\AppController;
 use Cake\ORM\TableRegistry;
+use Cake\Event\EventInterface;
+
 
 /**
  * SystemSettings Controller
@@ -13,10 +15,10 @@ use Cake\ORM\TableRegistry;
  */
 class SystemSettingsController extends AppController
 {
-    public function initialize()
+    public function beforeFilter(EventInterface $event)
     {
-        parent::initialize();
-        $this->loadComponent('Ajax');
+        parent::beforeFilter($event);
+        $this->loadComponent('Avalon.Ajax');
     }
 
     /**

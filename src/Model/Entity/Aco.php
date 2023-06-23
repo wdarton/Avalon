@@ -1,5 +1,5 @@
 <?php
-namespace App\Model\Entity;
+namespace Avalon\Model\Entity;
 
 use Cake\ORM\Entity;
 

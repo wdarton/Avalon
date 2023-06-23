@@ -2,7 +2,7 @@
 namespace Avalon\Controller;
 
 use App\Controller\AppController;
-use Cake\Event\Event;
+use Cake\Event\EventInterface;
 use Cake\ORM\TableRegistry;
 
 /**
@@ -14,10 +14,10 @@ use Cake\ORM\TableRegistry;
  */
 class PermissionsController extends AppController
 {
-    public function beforeFilter(Event $event)
+    public function beforeFilter(EventInterface $event)
     {
         parent::beforeFilter($event);
-        $this->Permissions = TableRegistry::getTableLocator()->get('Permissions');
+        $this->Permissions = TableRegistry::getTableLocator()->get('Avalon.Permissions');
     }
 
     /**

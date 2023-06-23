@@ -45,9 +45,12 @@ class RolesTable extends Table
 
         $this->addBehavior('Avalon.UserActionLogs');
         
-        $this->hasMany('Users', [
+        $this->hasMany('Avalon.Users', [
             'foreignKey' => 'role_id',
             'className' => 'Avalon.Users',
+        ]);
+        $this->hasMany('Avalon.Permissions', [
+            'foreignKey' => 'role_id'
         ]);
     }
 
@@ -65,5 +68,80 @@ class RolesTable extends Table
             ->allowEmptyString('label');
 
         return $validator;
+    }
+
+    public function savePermissions($entity, $data)
+    {
+        if ($this->save($entity)) {
+            $this->Permissions->savePermissions($data, $entity->id);
+            return true;
+        }
+    }
+
+    public function getEffectiveRolePermissions($roleId)
+    {
+        $parents = $this->Permissions->Acos->find('all', [
+            'conditions' => ['parent_id is null'],
+            'contain' => ['Permissions' => [
+                    'conditions' => [
+                            'role_id' => $roleId,
+                        ]
+                ]
+            ]
+        ]);
+
+        $children = $this->Permissions->Acos->find('all', [
+            'conditions' => ['parent_id >' => '0'],
+            'contain' => ['Permissions' => [
+                    'conditions' => [
+                            'role_id' => $roleId,
+                        ]
+                ]
+            ]
+        ]);
+
+        $ePermissions = [];
+
+        foreach ($parents as $parent) {
+            $ePermissions[$parent->alias] = [
+                'id' => $parent->id,
+                'parent_id' => $parent->parent_id,
+                'allowed' => $parent['permissions'][0]['allowed'],
+            ];
+        }
+        $permissions = $this->Permissions->getRolePermissions($roleId);
+
+        foreach ($children as $child) {
+            // Check to see if the child's parent has a parent
+            $parent = $this->Permissions->Acos->get($child->parent_id);
+
+            if (!is_null($parent->parent_id)) {
+                // The parent is a child
+                $grandParent = $this->Permissions->Acos->get($parent->parent_id);
+                $ePermissions[$grandParent->alias]['children'][$parent->alias]['children'][$child->alias] = [
+                    'id' => $child->id,
+                    'parent_id' => $child->parent_id,
+                    // 'allowed' => $child['permissions'][0]['allowed'],
+                    'allowed' => $permissions[$child->id]['allowed'],
+                ];
+
+            } else {
+                $ePermissions[$parent->alias]['children'][$child->alias] = [
+                    'id' => $child->id,
+                    'parent_id' => $child->parent_id,
+                    // 'allowed' => $child['permissions'][0]['allowed'],
+                    'allowed' => $permissions[$child->id]['allowed'],
+                ];
+            }
+
+        }
+
+
+        return $ePermissions;
+    }
+
+    public function getEffectivePermissions($userId)
+    {
+
     }
 }

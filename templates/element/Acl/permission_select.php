@@ -17,8 +17,22 @@ if (!isset($value)) {
 			// If there is we should use the allowed value from there instead
 			if (!is_null($permissions[$parentAcoId]['parent_aco_id']) &&
 				$tmpValue == -1) {
-				$gParentAcoId = $permissions[$parentAcoId]['parent_aco_id'];
-				$tmpValue = $permissions[$gParentAcoId]['allowed'];
+
+
+				// Check if there is a great-grandparent
+				// If there is we should use the allowed value from there instead
+				$grandparentAcoId = $permissions[$parentAcoId]['parent_aco_id'];
+				$tmpValue = $permissions[$grandparentAcoId]['allowed'];
+
+				if (!is_null($permissions[$grandparentAcoId]['parent_aco_id']) &&
+				$tmpValue == -1) {
+					$greatGrandparentAcoId = $permissions[$grandparentAcoId]['parent_aco_id'];
+					// $tmpValue = 'ggp'.$permissions[$greatGrandparentAcoId]['allowed'];
+					$tmpValue = $permissions[$greatGrandparentAcoId]['allowed'];
+				} else {
+					// $tmpValue = 'gp'.$permissions[$grandparentAcoId]['allowed'];
+					$tmpValue = $permissions[$grandparentAcoId]['allowed'];
+				}
 			}
 
 		} else {
@@ -50,7 +64,8 @@ if (!isset($value)) {
 }
 
 echo '<td>';
-// echo (isset($tmpValue)) ? $tmpValue : $value;
+// echo (isset($tmpValue)) ? 't'.$tmpValue : 'v'.$value;
+// echo ' ';
 echo $icon.'</td>';
 echo '<td>';
 echo $this->Form->select(
