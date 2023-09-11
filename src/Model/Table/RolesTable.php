@@ -7,6 +7,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Log\Log;
 
 /**
  * Roles Model
@@ -100,10 +101,32 @@ class RolesTable extends Table
             ]
         ]);
 
-        $ePermissions = [];
+
+        $effectivePerms = [];
+
+        // $parents = $this->Permissions->Acos->find('all', [
+        //     'conditions' => ['parent_id is null'],
+        //     'contain' => ['Permissions' => [
+        //             'conditions' => [
+        //                     'role_id' => $roleId,
+        //                 ]
+        //         ]
+        //     ]
+        // ]);
+
+        // $acos = $this->Permissions->Acos->find('list', [
+        //     'keyField' => 'id',
+        //     'valueField' => 'parent_id',
+        //     'groupField' => 
+        // ])->toArray();
+        // // Log::debug('ACOS: '.print_r(json_decode(json_encode($acos), true), true));
+        // Log::debug('ACOS: '.print_r($acos, true));
+
+        // $effectivePerms = [];
 
         foreach ($parents as $parent) {
-            $ePermissions[$parent->alias] = [
+
+            $effectivePerms[$parent->alias] = [
                 'id' => $parent->id,
                 'parent_id' => $parent->parent_id,
                 'allowed' => $parent['permissions'][0]['allowed'],
@@ -112,32 +135,79 @@ class RolesTable extends Table
         $permissions = $this->Permissions->getRolePermissions($roleId);
 
         foreach ($children as $child) {
-            // Check to see if the child's parent has a parent
+            // Check to see if the child has a grandparent
             $parent = $this->Permissions->Acos->get($child->parent_id);
+            // $parent = (object)$parents[$child->parent_id];
 
             if (!is_null($parent->parent_id)) {
-                // The parent is a child
-                $grandParent = $this->Permissions->Acos->get($parent->parent_id);
-                $ePermissions[$grandParent->alias]['children'][$parent->alias]['children'][$child->alias] = [
-                    'id' => $child->id,
-                    'parent_id' => $child->parent_id,
-                    // 'allowed' => $child['permissions'][0]['allowed'],
-                    'allowed' => $permissions[$child->id]['allowed'],
-                ];
+                // We have a grandparent
+                
+                // Check to see if the child has a great-grandparent
+                $grandparent = $this->Permissions->Acos->get($parent->parent_id);
+                // $grandparent = $parents[$parent->parent_id];
 
+                if (!is_null($grandparent->parent_id)) {
+                    // We have a great-grandparent
+                    $greatGrandparent = $this->Permissions->Acos->get($grandparent->parent_id);
+                    // $greatGrandparent = $parents[$grandparent->parent_id];
+
+                    // Add to the effective permissions
+                    $effectivePerms[$greatGrandparent->alias]['children'][$grandparent->alias]['children'][$parent->alias]['children'][$child->alias] = [
+                        'id' => $child->id,
+                        'parent_id' => $child->parent_id,
+                        // 'allowed' => $child['permissions'][0]['allowed'],
+                        'allowed' => $permissions[$child->id]['allowed'],
+                    ];
+                    
+                } else {
+                    // Add to the effective permissions
+                    $effectivePerms[$grandparent->alias]['children'][$parent->alias]['children'][$child->alias] = [
+                        'id' => $child->id,
+                        'parent_id' => $child->parent_id,
+                        // 'allowed' => $child['permissions'][0]['allowed'],
+                        'allowed' => $permissions[$child->id]['allowed'],
+                    ];
+
+                }
             } else {
-                $ePermissions[$parent->alias]['children'][$child->alias] = [
-                    'id' => $child->id,
-                    'parent_id' => $child->parent_id,
-                    // 'allowed' => $child['permissions'][0]['allowed'],
-                    'allowed' => $permissions[$child->id]['allowed'],
-                ];
-            }
+                // Add to the effective permissions
+                $effectivePerms[$parent->alias]['children'][$child->alias] = [
+                        'id' => $child->id,
+                        'parent_id' => $child->parent_id,
+                        // 'allowed' => $child['permissions'][0]['allowed'],
+                        'allowed' => $permissions[$child->id]['allowed'],
+                    ];
 
+            }
         }
 
+        // foreach ($children as $child) {
+        //     // Check to see if the child's parent has a parent
+        //     $parent = $this->Permissions->Acos->get($child->parent_id);
 
-        return $ePermissions;
+        //     if (!is_null($parent->parent_id)) {
+        //         // The parent is a child
+        //         $grandParent = $this->Permissions->Acos->get($parent->parent_id);
+        //         $effectivePerms[$grandParent->alias]['children'][$parent->alias]['children'][$child->alias] = [
+        //             'id' => $child->id,
+        //             'parent_id' => $child->parent_id,
+        //             // 'allowed' => $child['permissions'][0]['allowed'],
+        //             'allowed' => $permissions[$child->id]['allowed'],
+        //         ];
+
+        //     } else {
+        //         $effectivePerms[$parent->alias]['children'][$child->alias] = [
+        //             'id' => $child->id,
+        //             'parent_id' => $child->parent_id,
+        //             // 'allowed' => $child['permissions'][0]['allowed'],
+        //             'allowed' => $permissions[$child->id]['allowed'],
+        //         ];
+        //     }
+
+        // }
+
+
+        return $effectivePerms;
     }
 
     public function getEffectivePermissions($userId)

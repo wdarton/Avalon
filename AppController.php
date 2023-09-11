@@ -52,6 +52,9 @@ class AppController extends Controller
         // Add this line to check authentication result and lock your site
         $this->loadComponent('Authentication.Authentication');
 
+        $this->loadComponent('Authorization.Authorization');
+        
+
         if ($this->Authentication->getIdentity()) {
             $this->loadComponent('Avalon.UserAction', [
                 'user_id' => $this->Authentication->getIdentity()->id,

@@ -49,51 +49,47 @@ $cakeDescription = $appDescription;
 </head>
 <body id="main-body" class="bg-body-secondary overflow-y-hidden">
 
-    
+    <nav class="navbar navbar-expand-lg sticky-top bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand text-light"><?= $cakeDescription ?></a>
+                <!-- <form class="d-flex text-center" role="search">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                </form> -->
+            <ul class="navbar-nav">
+                <?= $this->element('Avalon.theme_selector') ?>
+                <li class="nav-item dropdown">
+                    <button class="btn btn-primary dropdown-toggle" id="user-dropdown" data-bs-toggle="dropdown"><i class="fas fa-user fa-fw"></i> <?= $identity->first_name ?></button>
+                    <ul class="dropdown-menu dropdown-menu dropdown-menu-end text-small shadow theme-icon-active" style="min-width: 1rem;" aria-labelledby="user-dropdown">
+                        <li>
+                            <?= $this->Html->link('<i class="fas fa-cogs fa-fw"></i> User Settings', 
+                                '/user-settings/edit', 
+                            [
+                                'escape' => false,
+                                'class' => 'dropdown-item',
 
-    <div class="container-fluid g-0">
-        <!-- <div class="row"> -->
-                <?= $this->element('Avalon.Navigation\sidenav', [
-                    'cakeDescription' => $cakeDescription
-                ]) ?>
+                            ]) ?>
+                        </li>
+                        <li>
+                            <?= $this->Html->link('<i class="fas fa-sign-out-alt fa-fw"></i> Logout', 
+                                '/logout', 
+                            [
+                                'escape' => false,
+                                'class' => 'dropdown-item',
 
-                <main class="col-md-9 ms-sm-auto col-lg-10 overflow-y-auto">
-                    <nav class="navbar navbar-expand-lg sticky-top bg-primary">
-                        <div class="container-fluid">
-                                <a class="navbar-brand text-light"></a>
-                                <!-- <form class="d-flex text-center" role="search">
-                                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                                </form> -->
-                            <ul class="navbar-nav">
-                                <?= $this->element('Avalon.theme_selector') ?>
-                                <li class="nav-item dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" id="user-dropdown" data-bs-toggle="dropdown"><i class="fas fa-user fa-fw"></i> <?= $identity->first_name ?></button>
-                                    <ul class="dropdown-menu dropdown-menu dropdown-menu-end text-small shadow theme-icon-active" style="min-width: 1rem;" aria-labelledby="user-dropdown">
-                                        <li>
-                                            <?= $this->Html->link('<i class="fas fa-cogs fa-fw"></i> User Settings', 
-                                                '/user-settings/edit', 
-                                            [
-                                                'escape' => false,
-                                                'class' => 'dropdown-item',
+                            ]) ?>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
 
-                                            ]) ?>
-                                        </li>
-                                        <li>
-                                            <?= $this->Html->link('<i class="fas fa-sign-out-alt fa-fw"></i> Logout', 
-                                                '/logout', 
-                                            [
-                                                'escape' => false,
-                                                'class' => 'dropdown-item',
+    <div class="container-fluid">
+        <div class="row">
+                <?= $this->element('Avalon.Navigation\sidenav') ?>
 
-                                            ]) ?>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-
-                    <div class="col py-3 px-md-4">
+                <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 overflow-y-auto">
+                    <div class="col py-3">
                         <div class="pb-1"></div>
                         <div class="row">
                             <div class="col">
@@ -106,7 +102,6 @@ $cakeDescription = $appDescription;
                                 <?= $this->Flash->render() ?>
                             </div>
                         </div>
-
                         <?= $this->fetch('content') ?>
                         <hr>
                         <footer class="text-center">
@@ -117,7 +112,7 @@ $cakeDescription = $appDescription;
                     </div>
                 </main>
             </div>
-        <!-- </div> -->
+        </div>
 
         <?php
             if ($params['action'] == 'index') {

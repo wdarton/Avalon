@@ -1,6 +1,6 @@
 <hr>
 <div class="text-center">
-    <?php if(isset($authUser)): ?>
+    <?php if(isset($identity)): ?>
         You are currently logged in as:
         <br>
         <strong><?= $currentUser->full_name ?></strong>

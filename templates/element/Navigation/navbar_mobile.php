@@ -87,7 +87,7 @@
 
         <?php endif; ?>
     <?php endforeach; ?>
-    <?php if ($authUser): ?>
+    <?php if ($identity): ?>
         <li class="nav-item">
             <?= $this->Html->link('Logout', [
                 'controller' => 'users',

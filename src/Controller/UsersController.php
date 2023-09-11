@@ -30,6 +30,7 @@ class UsersController extends AppController
 
     public function login()
     {
+        // $this->Authorization->skipAuthorization();
         // Log::debug('running login');
         $this->viewBuilder()->setLayout('login');
         $this->request->allowMethod(['get', 'post']);
@@ -45,6 +46,7 @@ class UsersController extends AppController
             }
 
             $user = $this->Authentication->getIdentity();
+            $user->getOriginalData();
 
             if ($this->request->is('post')) {
                 // Set their last logon time
@@ -173,6 +175,7 @@ class UsersController extends AppController
 
     public function logout()
     {
+        $this->Authorization->skipAuthorization();
         $result = $this->Authentication->getResult();
         // regardless of POST or GET, redirect if user is logged in
         if ($result && $result->isValid()) {
@@ -239,6 +242,8 @@ class UsersController extends AppController
      */
     public function index()
     {
+        $this->Authorization->skipAuthorization();
+
         $this->paginate = [
             'contain' => ['Roles']
         ];
@@ -273,6 +278,7 @@ class UsersController extends AppController
         $user = $this->Users->get($id, [
             'contain' => ['Roles'],
         ]);
+        // $this->Authorization->authorize($user);
 
         if ($this->request->is('ajax')) {
             $this->Ajax->sendToView($user);
@@ -389,6 +395,8 @@ class UsersController extends AppController
             'contain' => ['Roles'],
         ]);
 
+        // $this->Authorization->authorize($user);
+
         if ($this->request->is(['patch', 'post', 'put'])) {
             $user = $this->Users->patchEntity($user, $this->request->getData());
             $dirtyFields = $user->getDirty();
@@ -420,17 +428,25 @@ class UsersController extends AppController
     {
         $this->request->allowMethod(['post', 'ajax', 'delete']);
         $user = $this->Users->get($id);
-        if ($this->Users->delete($user)) {
-            $this->Flash->success(__('The user has been deleted.'));
-        } else {
-            $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+
+        try {
+            // $this->Authorization->authorize($user);
+            if ($this->Users->delete($user)) {
+                $this->Flash->success(__('The user has been deleted.'));
+            } else {
+                $this->Flash->error(__('The user could not be deleted. Please, try again.'));
+            }
+            if ($this->request->is('ajax')) {
+                $this->Ajax->sendSuccess();
+            } else {
+                return $this->redirect(['action' => 'index']);
+            }
+        } catch (\Authorization\Exception\ForbiddenException $e) {
+            $this->Flash->error(__('You are not authorized to perform that action.'));
+            return $this->redirect(['action' => 'index']);
+            
         }
 
-        if ($this->request->is('ajax')) {
-            $this->Ajax->sendSuccess();
-        } else {
-            return $this->redirect(['action' => 'index']);
-        }
 
         // return $this->redirect(['action' => 'index']);
     }

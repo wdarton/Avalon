@@ -21,6 +21,9 @@ $this->assign('title', 'Dashboard');
 	<div class="col-6">
 		<div class="card material">
 			<div class="card-body row" style="width: 100%; height: 500px">
+				<pre>
+					<?= print_r($identity->get('permissions'),true) ?>
+				</pre>
 			</div>
 		</div>
 	</div>

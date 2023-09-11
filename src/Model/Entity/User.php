@@ -5,6 +5,11 @@ namespace Avalon\Model\Entity;
 
 use Cake\ORM\Entity;
 use Cake\Auth\DefaultPasswordHasher;
+use Authorization\AuthorizationService;
+use Authentication\IdentityInterface;
+use Cake\ORM\TableRegistry;
+
+use Cake\Log\Log;
 
 /**
  * User Entity
@@ -27,7 +32,7 @@ use Cake\Auth\DefaultPasswordHasher;
  *
  * @property \Avalon\Model\Entity\Role $role
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -77,5 +82,54 @@ class User extends Entity
 
             return $hasher->hash($value);
         }
+    }
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getIdentifier()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getOriginalData()
+    {
+        $usersTable = TableRegistry::get('Avalon.Users');
+        $this->permissions = $usersTable->Roles->getEffectiveRolePermissions($this->role_id);
+        // Log::debug('USERORIGINALDATA');
+        // Log::debug(print_r($this->toArray(), true));
+        return $this;
+    }
+
+    /**
+     * Authorization\IdentityInterface method
+     */
+    public function isAuthorized($aco): bool
+    {
+        $userPermissions = $this->permissions;
+        $plugin = $aco['plugin'];
+        $prefix = $aco['prefix'];
+        $controller = $aco['controller'];
+        
+        // Check for a plugin first
+        if (!is_null($plugin)) {
+            // Check for a prefix 
+            if (!is_null($prefix)) {
+                return (bool) $userPermissions[$plugin]['children'][$prefix]['children'][$controller]['allowed'];
+            } else {
+                return (bool) $userPermissions[$plugin]['children'][$controller]['children'][$action]['allowed'];
+            }
+        } else {
+            if (!is_null($prefix)) {
+                return (bool) $userPermissions[$prefix]['children'][$controller]['children'][$action]['allowed'];
+            } else {
+                return (bool) $userPermissions[$controller]['children'][$action]['allowed'];
+            }
+        }
+
+        return $this->authorization->can($this, $action, $resource);
     }
 }

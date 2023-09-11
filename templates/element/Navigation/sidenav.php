@@ -13,15 +13,17 @@
     <div class="position-sticky pt-3 sidebar-sticky">
         <ul class="nav nav-pills nav-fill flex-column">
             <li class="nav-item">
-                <span class="d-inline-flex">Overview</span>
+                <a class="sidebar-brand px-3 py-2" href="/dashboard"><?= $cakeDescription ?></a>
             </li>
         </ul>
+        <!-- <br> -->
         <hr>
         <ul class="list-unstyled ps-0">
             <?php foreach($navMenus as $navMenu) : ?>
 
                 <?php
-                // if (!$this->Auth->isAuthorized($authUser,$navMenu)) {
+                // if (!$this->Auth->isAuthorized($identity,$navMenu)) {
+                // if (!$this->AuthCheck->isAuthorized($navMenu)) {
                 //     continue;
                 // }
 
@@ -59,7 +61,7 @@
                 <li class="">
                     <?php if (!empty($navMenu->pages)) : ?>
                         <?php // There are child pages for this menu ?>
-                        <button class="btn btn-toggle p-2 d-inline-flex align-items-center w-100 border-0 rounded-0 collapsed" data-bs-toggle="collapse" data-bs-target="#<?= $this->Text->slug($navMenu->label) ?>-collapse" aria-expanded="<?= $active ? 'true' : 'false' ?>">
+                        <button class="btn btn-toggle px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0 collapsed" data-bs-toggle="collapse" data-bs-target="#<?= $this->Text->slug($navMenu->label) ?>-collapse" aria-expanded="<?= $active ? 'true' : 'false' ?>">
                             <span class="<?= $active ?>"><?= $icon.$navMenu->label ?></span>
                         </button>
                         <div class="collapse <?= $active ? 'show' : '' ?>" id="<?= $this->Text->slug($navMenu->label) ?>-collapse">
@@ -91,7 +93,7 @@
                         <?php if ($navMenu->literal): ?>
                             <?= $this->Html->link("<span class='{$active}'>{$icon}{$navMenu->label}</span>",
                                     ($navMenu->prefix ? $navMenu->prefix : '').($navMenu->controller ? '/'.$navMenu->controller : '').'/'.$navMenu->controller_action,
-                                    ['class' => 'btn btn-menu p-2 d-inline-flex align-items-center w-100 border-0 rounded-0', 'escape' => false,]
+                                    ['class' => 'btn btn-menu px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0', 'escape' => false,]
                                 ); ?>
                         <?php else: ?>
                                 <?= $this->Html->link("<span class='{$active}'>{$icon}{$navMenu->label}</span>", [
@@ -100,7 +102,7 @@
                                     'action' => $navMenu->controller_action,
                                 ],
                                 [
-                                    'class' => 'btn btn-menu p-2 d-inline-flex align-items-center w-100 border-0 rounded-0',
+                                    'class' => 'btn btn-menu px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0',
                                     'escape' => false,
                                 ]) ?>
                         <?php endif; ?>
@@ -118,9 +120,10 @@
             <?php foreach($adminNavMenus as $adminMenu) : ?>
 
                 <?php
-                // if (!$this->Auth->isAuthorized($authUser,$adminMenu)) {
-                //     continue;
-                // }
+                // if (!$this->Auth->isAuthorized($identity,$adminMenu)) {
+                if (!$this->AuthCheck->isAuthorized($adminMenu)) {
+                    continue;
+                }
 
                 // Figure out which menu we are in and highlight it in the navigation
                 $active = false;
@@ -155,12 +158,17 @@
 
                 <li class="">
                     <?php if (!empty($adminMenu->pages)) : ?>
-                        <button class="btn btn-toggle p-2 d-inline-flex align-items-center w-100 border-0 rounded-0 collapsed" data-bs-toggle="collapse" data-bs-target="#<?= $adminMenu->label ?>-collapse" aria-expanded="<?= $active ? 'true' : 'false' ?>">
+                        <button class="btn btn-toggle px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0 collapsed" data-bs-toggle="collapse" data-bs-target="#<?= $adminMenu->label ?>-collapse" aria-expanded="<?= $active ? 'true' : 'false' ?>">
                             <span class="<?= $active ?>"><?= $icon.$adminMenu->label ?></span>
                         </button>
                         <div class="collapse <?= $active ? 'show' : '' ?>" id="<?= $adminMenu->label ?>-collapse">
                             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 <?php foreach ($adminMenu->pages as $adminPage) : ?>
+                                    <?php
+                                        if (!$this->AuthCheck->isAuthorized($adminPage)) {
+                                            continue;
+                                        }
+                                    ?>
                                     <?php if ($adminPage->literal): ?>
                                         <?= $this->Html->link($adminPage->label,
                                                 ($adminPage->prefix ? $adminPage->prefix : '').'/'.$adminPage->controller.'/'.$adminPage->controller_action,
@@ -168,14 +176,29 @@
                                             ); ?>
                                     <?php else: ?>
                                         <li>
-                                            <?= $this->Html->link($adminPage->label, [
-                                                'prefix' => $adminPage->prefix ? $adminPage->prefix : false,
-                                                'controller' => $adminPage->controller,
-                                                'action' => $adminPage->controller_action,
-                                            ],
-                                            [
-                                                'class' => ' d-inline-flex text-decoration-none w-100',
-                                            ]) ?>
+                                            <?php
+                                                if ($adminPage->prefix != '') {
+                                                    echo $this->Html->link($adminPage->label, [
+                                                        'prefix' => $adminPage->prefix ? $adminPage->prefix : false,
+                                                        'plugin' =>  $adminPage->_plugin ? $adminPage->_plugin : false,
+                                                        'controller' => $adminPage->controller,
+                                                        'action' => $adminPage->controller_action,
+                                                    ],
+                                                    [
+                                                        'class' => ' d-inline-flex text-decoration-none w-100',
+                                                    ]);    
+                                                } else {
+                                                    echo $this->Html->link($adminPage->label, [
+                                                        'prefix' => false,
+                                                        'plugin' => $adminPage->_plugin ? $adminPage->_plugin : false,
+                                                        'controller' => $adminPage->controller,
+                                                        'action' => $adminPage->controller_action,
+                                                    ],
+                                                    [
+                                                        'class' => ' d-inline-flex text-decoration-none w-100',
+                                                    ]);
+                                                }
+                                            ?>
                                         </li>
                                     <?php endif; ?>
                                 <?php endforeach ?>
@@ -186,7 +209,7 @@
                         <?php if ($adminMenu->literal): ?>
                             <?= $this->Html->link("<span class='{$active}'>{$icon}{$adminMenu->label}</span>",
                                     ($adminMenu->prefix ? $adminMenu->prefix : '').($adminMenu->controller ? '/'.$adminMenu->controller : '').'/'.$adminMenu->controller_action,
-                                    ['class' => 'btn btn-menu p-2 d-inline-flex align-items-center w-100 border-0 rounded-0', 'escape' => false,]
+                                    ['class' => 'btn btn-menu px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0', 'escape' => false,]
                                 ); ?>
                         <?php else: ?>
                                 <?= $this->Html->link("<span class='{$active}'>{$icon}{$adminMenu->label}</span>", [
@@ -195,7 +218,7 @@
                                     'action' => $adminMenu->controller_action,
                                 ],
                                 [
-                                    'class' => 'btn btn-menu p-2 d-inline-flex align-items-center w-100 border-0 rounded-0',
+                                    'class' => 'btn btn-menu px-3 py-2 d-inline-flex align-items-center w-100 border-0 rounded-0',
                                     'escape' => false,
                                 ]) ?>
                         <?php endif; ?>

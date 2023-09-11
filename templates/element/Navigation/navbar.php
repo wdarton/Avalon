@@ -1,7 +1,7 @@
 <ul class="navbar-nav">
     <?php foreach ($navMenus as $navMenu): ?>
         <?php
-            if (!$this->Auth->isAuthorized($authUser,$navMenu)) {
+            if (!$this->Auth->isAuthorized($identity,$navMenu)) {
                 continue;
             }
 
@@ -54,7 +54,7 @@
 
                         <?php
                             // Ensure the user can access this resource!
-                            $allowed = $this->Auth->isAuthorized($authUser,$navPage);
+                            $allowed = $this->Auth->isAuthorized($identity,$navPage);
 
                             if (!$allowed) {
                                 continue;
